@@ -18,6 +18,9 @@ CREATE TABLE crypto.yldapp (
     atl_btc NUMERIC(12,10),
     atl_eth NUMERIC(12,10),
     atl_usd NUMERIC(12,6),
+    market_cap_btc BIGINT,
+    market_cap_eth BIGINT,
+    market_cap_usd BIGINT,
     last_updated TIMESTAMP NOT NULL,
     added_to_table TIMESTAMP without time zone default (now() at time zone 'utc')
 );
