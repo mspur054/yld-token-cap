@@ -1,6 +1,5 @@
-import datetime as dt
 import logging
-import os
+
 import sys
 
 import requests
@@ -9,7 +8,7 @@ from yldtokenmonitor.util.connect import Database
 from yldtokenmonitor.util.db_config import get_db_config
 
 
-def _get_token_exchange_data()->dict:
+def _get_token_exchange_data() -> dict:
     """
     Uses the coingecko api to get token data
 
@@ -34,7 +33,7 @@ def flatten(dct: dict[str, any]) -> dict[str, any]:
 
     Returns:
         dict[str, any]: flattened dictionary
-    """    
+    """
 
     outer = {}
     for key, val in dct.items():
@@ -73,12 +72,12 @@ def filter_data(initial_data: dict[str, any]) -> dict[str, any]:
     }
 
 
-def get_cleaned_data()->dict[str,any]:
+def get_cleaned_data() -> dict[str, any]:
     """Pulls data from api and prepares it for upload
 
     Returns:
         [type]: [description]
-    """    
+    """
     initial = _get_token_exchange_data()
     dct = {'id': initial['id']}
     # filter and flatten and add
@@ -93,7 +92,7 @@ def __crypto_insert_query() -> str:
 
     Returns:
         str: insert query
-    """    
+    """
     return '''
         INSERT INTO crypto.yldapp (
             id,
@@ -144,7 +143,7 @@ def __crypto_insert_query() -> str:
 
 def main() -> None:
     """Extract, clean and load data into database
-    """    
+    """
     token_data = get_cleaned_data()
     with Database(**get_db_config()).managed_cursor() as cur:
         cur.execute(__crypto_insert_query(), token_data)
