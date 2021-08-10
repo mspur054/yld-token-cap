@@ -1,12 +1,16 @@
 import logging
-
+import logging.config
 import sys
 
 import requests
 
 from yldtokenmonitor.util.connect import Database
 from yldtokenmonitor.util.db_config import get_db_config
+from yldtokenmonitor.util.loggers import LOGGING
 
+logging.config.dictConfig(LOGGING)
+
+logger = logging.getLogger("pipeline")
 
 def _get_token_exchange_data() -> dict:
     """
@@ -19,8 +23,9 @@ def _get_token_exchange_data() -> dict:
 
     try:
         res = requests.get(url)
+        logger.info("Retrieved exchange data")
     except requests.ConnectionError as e:
-        logging.error(f"Was not able to connect to the API, {e}")
+        logger.error(f"Was not able to connect to the API, {e}")
         sys.exit(1)
     return res.json()
 
@@ -144,11 +149,13 @@ def __crypto_insert_query() -> str:
 def main() -> None:
     """Extract, clean and load data into database
     """
-    token_data = get_cleaned_data()
-    with Database(**get_db_config()).managed_cursor() as cur:
-        cur.execute(__crypto_insert_query(), token_data)
-        print('done inserting')
-
+    try:
+        token_data = get_cleaned_data()
+        with Database(**get_db_config()).managed_cursor() as cur:
+            cur.execute(__crypto_insert_query(), token_data)
+            logger.info("Inserted exchange data into database")
+    except Exception as e:
+        logger.error(e)
 
 if __name__ == "__main__":
     main()
