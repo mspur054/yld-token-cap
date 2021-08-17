@@ -22,7 +22,7 @@ COPY ./ /code/
 # Python requirements
 RUN pip install --upgrade pip
 
-COPY ../containers/pipeline/requirements.txt requirements.txt
+COPY ./containers/pipeline/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 
