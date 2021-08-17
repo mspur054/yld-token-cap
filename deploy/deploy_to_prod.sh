@@ -9,12 +9,12 @@ fi
 # zip repo into gz file
 cd ..
 rm -f yldtokenmonitor.gzip
-zip -r yldtokenmonitor.gzip yldtokenmonitor/*
+zip -r yldtokenmonitor.gzip yld-token-cap/* yld-token-cap/.env
 
 # Send zipped repo to EC2
 chmod 400 $1
 scp -i $1 yldtokenmonitor.gzip ubuntu@$2:~/.
-cd yldtokenmonitor
+cd yld-token-cap
 
 # Send docker installation script to EC2
 scp -i $1 ./deploy/install_docker.sh ubuntu@$2:~/.
