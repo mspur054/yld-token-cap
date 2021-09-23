@@ -31,11 +31,6 @@ COPY /cron/get_yld_token_info /etc/cron.d/get_yld_token_info
 
 # Move environment variables to file
 COPY /cron/start_env.sh /etc/start_env.sh
-#RUN printenv | grep -v "no_proxy" >> /etc/environment 
-# didn't work
-
-
-# RUN /etc/move_env.sh
 
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/get_yld_token_info
@@ -43,10 +38,7 @@ RUN chmod 0644 /etc/cron.d/get_yld_token_info
 # Apply cron job
 RUN crontab /etc/cron.d/get_yld_token_info
 
-
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
-
 # Run cron
-#CMD cron && tail -f /var/log/cron.log
 CMD ["/etc/start_env.sh"]
