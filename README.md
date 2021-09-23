@@ -5,7 +5,7 @@ This is a project that sends token information from Coingecko to a postgres inst
 
 ## Architecture
 
-![pipeline-image](assets\yld_pipeline_diagram.png "Pipeline Image")
+![pipeline-image](assets/yld_pipeline_diagram.png "Pipeline Image")
 
 Pipeline: Python
 
